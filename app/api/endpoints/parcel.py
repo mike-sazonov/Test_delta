@@ -1,10 +1,12 @@
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import Request, APIRouter, Depends
 from sqlalchemy import select
+from typing import List, Optional
 
 from app.db.database import AsyncSession, get_db
-
+from app.api.schemas.parcel import ParcelCreate, ParcelOut, ParcelTypeOut
+from app.db.models import Parcel, ParcelType
 
 parcel_router = APIRouter(
     prefix="/parcel",
@@ -19,6 +21,12 @@ async def register_parcel(parcel: ParcelCreate, request: Request, db: AsyncSessi
     db.add(db_parcel)
     await db.commit()
     return {"id": db_parcel.id, "message": "Посылка зарегистрирована"}
+
+
+@parcel_router.get("/types/", response_model=List[ParcelTypeOut])
+async def get_parcel_types(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ParcelType))
+    return result.scalars().all()
 
 
 @parcel_router.get("/parcels/", response_model=List[ParcelOut])
