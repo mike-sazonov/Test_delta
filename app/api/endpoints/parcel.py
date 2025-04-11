@@ -2,6 +2,7 @@ import uuid
 
 from fastapi import Request, APIRouter, Depends
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from typing import List, Optional
 
 from app.db.database import AsyncSession, get_db
@@ -41,7 +42,7 @@ async def get_user_parcels(
     session_id = request.session.get("session_id")
     if not session_id:
         return []
-    stmt = select(Parcel).where(Parcel.session_id == session_id)
+    stmt = select(Parcel).options(selectinload(Parcel.type)).where(Parcel.session_id == session_id)
     if type_id:
         stmt = stmt.where(Parcel.type_id == type_id)
     if is_cost_calculated is not None:
@@ -66,7 +67,7 @@ async def get_user_parcels(
 @parcel_router.get("/parcels/{parcel_id}", response_model=ParcelOut)
 async def get_parcel(parcel_id: str, request: Request, db: AsyncSession = Depends(get_db)):
     session_id = request.session.get("session_id")
-    stmt = select(Parcel).where(Parcel.id == parcel_id, Parcel.session_id == session_id)
+    stmt = select(Parcel).options(selectinload(Parcel.type)).where(Parcel.id == parcel_id, Parcel.session_id == session_id)
     result = await db.execute(stmt)
     parcel = result.scalar_one_or_none()
     if not parcel:
