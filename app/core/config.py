@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DB_PASS: str
     REDIS_URL: str
     DAILY_USD_RUB: str
+    SECRET: str
 
     @property
     def ASYNC_DATABASE_URl(self):
