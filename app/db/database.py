@@ -1,6 +1,7 @@
-from app.core.config import settings
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
+
+from app.core.config import settings
 
 
 DATABASE_URL = settings.ASYNC_DATABASE_URl
@@ -12,11 +13,3 @@ Base = declarative_base()
 async def get_db():
     async with AsyncSessionLocal() as session:
         yield session
-
-
-
-
-
-
-
-

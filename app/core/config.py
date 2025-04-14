@@ -1,6 +1,3 @@
-import os
-import aioredis
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,6 +7,8 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASS: str
+    REDIS_URL: str
+    DAILY_USD_RUB: str
 
     @property
     def ASYNC_DATABASE_URl(self):
@@ -18,8 +17,3 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
-
-
-REDIS_URL = os.getenv("REDIS_URL")
-redis_client = aioredis.from_url(REDIS_URL, decode_responses=True)
-
