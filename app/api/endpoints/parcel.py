@@ -80,4 +80,3 @@ async def get_parcel(parcel_id: str, request: Request, db: AsyncSession = Depend
         type_name=parcel.type.name,
         delivery_cost_rub=parcel.delivery_cost_rub if parcel.delivery_cost_rub else "Не рассчитано"
     )
-
