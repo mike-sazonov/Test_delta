@@ -19,6 +19,9 @@ class ParcelOut(BaseModel):
     class Config:
         orm_mode = True
 
+class ParcelTypeCreate(BaseModel):
+    name: str
+
 class ParcelTypeOut(BaseModel):
     id: int
     name: str

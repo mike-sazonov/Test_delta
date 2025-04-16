@@ -130,6 +130,7 @@ celerybeat.pid
 
 # Environments
 .env
+docker.env
 .venv
 env/
 venv/
@@ -177,6 +178,7 @@ cython_debug/
 
 # local db
 db.sqlite
+dbdata
 
 #alembic
 alembic/env.py
