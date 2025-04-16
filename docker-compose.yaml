@@ -7,7 +7,7 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
-    command: bash -c "uv run main.py"
+    command: bash -c "uv run main.py && uv run alembic revision --autogenerate"
     volumes:
       - ./app:/app
     ports:

@@ -20,7 +20,12 @@ async def register_parcel(parcel: ParcelCreate, request: Request, db: AsyncSessi
     session_id = request.session.setdefault("session_id", str(uuid.uuid4()))
     db_parcel = Parcel(**parcel.dict(), session_id=session_id)
     db.add(db_parcel)
-    await db.commit()
+    try:
+        await db.commit()
+    except:
+        raise HTTPException(
+            status_code=422
+        )
     return {"id": db_parcel.id, "message": "Посылка зарегистрирована"}
 
 
